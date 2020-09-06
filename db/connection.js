@@ -1,9 +1,9 @@
 'use strict';
-
+// Dependencies
 const util =  require('util');
 const mysql = require('mysql');
 require('dotenv').config();
-
+// Creating connection to localhost
 const connection =  mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -17,5 +17,5 @@ connection.connect(function(err){
 });
 
 connection.query = util.promisify(connection.query);
-
+// Exporting the connection
 module.exports = connection;

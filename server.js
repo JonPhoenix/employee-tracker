@@ -1,11 +1,12 @@
 'use strict';
-
+// Dependencies
 const inquirer = require('inquirer');
 const logo = require("asciiart-logo");
 const prompts = require('./prompts');
 const db = require("./db"); 
 require("console.table");
 
+// Init function with asciiart-logo and mainPrompt() call
 init();
 
 function init() {
@@ -14,6 +15,7 @@ function init() {
   mainPrompt();
 }
 
+// Async function mainPrompt() / switch case / CRUD
 async function mainPrompt() {
     const choice = await prompts();
 
@@ -28,11 +30,12 @@ async function mainPrompt() {
             viewAllDepartments();
             break;
         case 'Quit':
-            quit();
+            quit(); // Function to exit the app
             break;
     };
 };
 
+// Async functions / db calls / print tables to console.log
 async function viewAllEmployees() {
     const employees = await db.viewAllEmployees();
     console.log('\n');

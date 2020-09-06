@@ -2,6 +2,7 @@
 
 const inquirer = require('inquirer');
 
+// Prompts routed to server.js
 function mainPrompt() {
     return inquirer.prompt(
         {
