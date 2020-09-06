@@ -1,5 +1,6 @@
 USE undecided_db;
 
+-- Populating tables
 INSERT INTO departments
     (name)
 

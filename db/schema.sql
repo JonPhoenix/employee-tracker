@@ -3,12 +3,14 @@ CREATE DATABASE undecided_db;
 
 USE undecided_db;
 
+-- Creating table
 CREATE TABLE departments (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(30) UNIQUE NOT NULL,
   PRIMARY KEY(id)
 );
 
+-- Creating table
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(30) UNIQUE NOT NULL,
@@ -20,6 +22,7 @@ CREATE TABLE roles (
   ON DELETE CASCADE
 );
 
+-- Creating table
 CREATE TABLE employees (
   id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) UNIQUE NOT NULL,
