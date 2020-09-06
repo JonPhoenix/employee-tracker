@@ -64,6 +64,55 @@ class DB {
         `
         )
     }
+
+    // View all employees by department
+    viewEmployeesByDepartment() {
+        return this.connection.query(
+        `
+        SELECT
+            departments.name AS Department,
+            employees.first_name AS First_Name,
+            employees.last_name AS Last_Name,
+            roles.title AS Role,
+            CONCAT(manager.first_name, ' ', manager.last_name) AS Manager
+        FROM
+            employees
+        LEFT JOIN
+            roles ON employees.role_id = roles.id
+        LEFT JOIN
+            departments ON roles.department_id = departments.id
+        LEFT JOIN
+            employees manager ON employees.manager_id = manager.id
+        ORDER BY
+            departments.name;
+        `
+        )
+    }
+
+    // View all employees by manager
+    viewEmployeesByManager() {
+        return this.connection.query(
+        `
+        SELECT
+            CONCAT(manager.first_name, ' ', manager.last_name) AS Manager,
+            departments.name AS Department,
+            employees.first_name AS First_Name,
+            employees.last_name AS Last_Name,
+            roles.title AS Role
+        FROM
+            employees
+        LEFT JOIN
+            roles ON employees.role_id = roles.id
+        LEFT JOIN
+            departments ON roles.department_id = departments.id
+        LEFT JOIN
+            employees manager ON employees.manager_id = manager.id
+        ORDER BY
+            Manager DESC;
+        `
+        )
+    }
+
 }
 
 // Testing
