@@ -1,32 +1,35 @@
-DROP DATABASE IF EXISTS employees_db;
-CREATE DATABASE employees_db;
+DROP DATABASE IF EXISTS undecided_db;
+CREATE DATABASE undecided_db;
 
-USE employees_db;
+USE undecided_db;
 
-CREATE TABLE department (
-  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(30) UNIQUE NOT NULL
+CREATE TABLE departments (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30) UNIQUE NOT NULL,
+  PRIMARY KEY(id)
 );
 
-CREATE TABLE role (
-  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE roles (
+  id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(30) UNIQUE NOT NULL,
-  salary INT NOT NULL,
-  department_id INT UNSIGNED NOT NULL,
-  INDEX department_id (department_id),
+  salary DECIMAL NOT NULL,
+  department_id INT,
+  PRIMARY KEY(id),
   CONSTRAINT fk_department_id FOREIGN KEY (department_id)
-  REFERENCES department(id)
+  REFERENCES departments(id)
+  ON DELETE CASCADE
 );
 
-CREATE TABLE employee (
-  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE employees (
+  id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) UNIQUE NOT NULL,
   last_name VARCHAR(30) UNIQUE NOT NULL,
-  role_id INT UNSIGNED NOT NULL,
-  manager_id INT UNSIGNED NOT NULL,
-  INDEX role_id (role_id),
+  role_id INT,
+  manager_id INT,
+  PRIMARY KEY(id),
   CONSTRAINT fk_role FOREIGN KEY (role_id) 
-  REFERENCES role(id),
+  REFERENCES roles(id),
   CONSTRAINT fk_manager FOREIGN KEY (role_id) 
-  REFERENCES role(id)
+  REFERENCES roles(id)
+  ON DELETE CASCADE
 );

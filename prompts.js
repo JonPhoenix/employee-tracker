@@ -1,19 +1,21 @@
 'use strict';
 
-const inquirer = require("inquirer");
+const inquirer = require('inquirer');
 
-async function mainPrompt() {
-    const { choice } = await inquirer.prompt([
+function mainPrompt() {
+    return inquirer.prompt(
         {
             type: 'list',
             name: 'choice',
             message: 'What would you like to do?',
             choices: [
-                {
-                    name: 'View all employees',
-                    value: 'VIEW_EMPLOYEES',
-                },
+                'View all employees',
+                'View all roles',
+                'View all departments',
+                'Quit',
             ]
         }
-    ])
+    );
 }
+
+module.exports = mainPrompt;
