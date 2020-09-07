@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 const inquirer = require('inquirer');
 
@@ -20,11 +20,13 @@ module.exports = {
                 'View employees by department',
                 'View employees by manager',
                 'Add a new employee',
+                'Add a new department',
                 'Quit',
             ]
         }
-    ]
+    ],
 }
+
 
 // ----------------------------------------------------
 // Method 2: Prompts routed to server.js / function and

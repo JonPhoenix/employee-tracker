@@ -1,6 +1,6 @@
 USE undecided_db;
 
--- Populating tables
+-- Populating departments
 INSERT INTO departments
     (name)
 
@@ -10,6 +10,7 @@ VALUES
     ("Finance"),
     ("Legal");
 
+-- Populating roles
 INSERT INTO roles
     (title, salary, department_id)
 
@@ -22,6 +23,7 @@ VALUES
     ("Legal Team Lead", 250000, 4),
     ("Lawyer Standard", 190000, 4);
 
+-- Populating employees
 INSERT INTO employees
     (first_name, last_name, role_id, manager_id)
 

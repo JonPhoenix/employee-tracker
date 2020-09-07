@@ -1,16 +1,16 @@
-'use strict';
+// 'use strict';
 // Dependencies
 const inquirer = require('inquirer');
-const logo = require("asciiart-logo");
+const logo = require('asciiart-logo');
 const prompts = require('./prompts');
-const db = require("./db"); 
-require("console.table");
+const db = require('./db'); 
+require('console.table');
 
 // Init function with asciiart-logo and mainPrompt() call
 init();
 
 function init() {
-  const logoText = logo({ name: "Undecided" }).render();
+  const logoText = logo({ name: 'Undecided' }).render();
   console.log(logoText);
   mainPrompt();
 }
@@ -40,8 +40,11 @@ async function mainPrompt() {
         case 'View employees by manager':
             viewEmployeesByManager();
             break;
-        case 'Add employee':
+        case 'Add a new employee':
             addEmployee();
+            break;
+        case 'Add a new department':
+            addDepartment();
             break;
         case 'Quit':
             quit(); // Function to exit the app
@@ -117,6 +120,77 @@ async function viewEmployeesByManager() {
     console.log('=======================================================================');
     mainPrompt();
 };
+
+// Add a new employee
+function addEmployee() {
+      inquirer.prompt([
+          {
+            type: 'input',
+            message: 'New employee\'s first name?',
+            name: 'first_name',
+          },
+          {
+            type: 'input',
+            message: 'New employee\'s last name?',
+            name: 'last_name',
+          },
+          {
+            type: 'list',
+            message: 'New employee\'s job title?',
+            choices: (async() => {
+                const arr = [];
+                const roles = await db.viewAllRoles();
+                roles.forEach(role => {
+                      arr.push(role.Role)
+                });
+                return arr;
+            }),
+            name: 'role',
+          },
+          {
+            type: 'list',
+            message: 'New employee\'s department?',
+            choices: (async() => {
+                const arr = [];
+                const deps = await db.viewAllDepartments();
+                deps.forEach(deps => {
+                    arr.push(deps.Department)
+                });
+                return arr;
+            }),
+            name: 'department',
+          },
+          {
+              type: 'input',
+              message: 'New employee\'s salary?',
+              name: 'salary',
+          }
+        ])
+        .then(async function (answer) {
+              const addEmp = await db.createEmployee(answer);
+              const showEmp = await db.viewAllEmployees();
+              console.table(showEmp);
+              mainPrompt();
+        });
+};
+
+// add a new department
+function addDepartment() {
+    inquirer.prompt({
+        type: 'input',
+        message: 'Name of the new department?',
+        name: 'department',
+      })
+      .then(async function (answer) {
+        const addDepart = await db.createDepartment(answer);
+        const showDept = await db.viewAllDepartments();
+        console.table(showDept);
+        mainPrompt();
+      });
+};
+
+// add a new role
+
 
 function quit() {
     process.exit();
