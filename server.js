@@ -10,7 +10,7 @@ require('console.table');
 init();
 
 function init() {
-  const logoText = logo({ name: 'Undecided' }).render();
+  const logoText = logo({ name: 'Employee Tracker' }).render();
   console.log(logoText);
   mainPrompt();
 }
@@ -43,6 +43,9 @@ async function mainPrompt() {
         case 'Add a new employee':
             addEmployee();
             break;
+        case 'Add a new role':
+            addRole();
+            break;
         case 'Add a new department':
             addDepartment();
             break;
@@ -51,31 +54,6 @@ async function mainPrompt() {
             break;
     };
 };
-
-// --------------------------------------------------------------
-// Method 2: Async function mainPrompt() / not using inquirer and
-// without destructuring its response, but using choice.choice as
-// the variable as choice will be returned with the promise object
-// before the switch case / See what changes in prompts.js / CRUD
-
-// async function mainPrompt() {
-//     const choice = await prompts();
-
-//     switch (choice.choice) {
-//         case 'View all employees':
-//             viewAllEmployees(); // Read from db
-//             break;
-//         case 'View all roles':
-//             viewAllRoles();
-//             break;
-//         case 'View all departments':
-//             viewAllDepartments();
-//             break;
-//         case 'Quit':
-//             quit(); // Function to exit the app
-//             break;
-//     };
-// };
 
 // --------------------------------------------------------------
 // Async functions / db calls / print tables to console.log
@@ -123,18 +101,18 @@ async function viewEmployeesByManager() {
 
 // Add a new employee
 function addEmployee() {
-      inquirer.prompt([
-          {
+    inquirer.prompt([
+        {
             type: 'input',
             message: 'New employee\'s first name?',
             name: 'first_name',
-          },
-          {
+        },
+        {
             type: 'input',
             message: 'New employee\'s last name?',
             name: 'last_name',
-          },
-          {
+        },
+        {
             type: 'list',
             message: 'New employee\'s job title?',
             choices: (async() => {
@@ -146,8 +124,8 @@ function addEmployee() {
                 return arr;
             }),
             name: 'role',
-          },
-          {
+        },
+        {
             type: 'list',
             message: 'New employee\'s department?',
             choices: (async() => {
@@ -159,19 +137,54 @@ function addEmployee() {
                 return arr;
             }),
             name: 'department',
-          },
-          {
-              type: 'input',
-              message: 'New employee\'s salary?',
-              name: 'salary',
-          }
-        ])
-        .then(async function (answer) {
-              const addEmp = await db.createEmployee(answer);
-              const showEmp = await db.viewAllEmployees();
-              console.table(showEmp);
-              mainPrompt();
-        });
+        },
+        {
+            type: 'input',
+            message: 'New employee\'s salary?',
+            name: 'salary',
+        }
+    ])
+    .then(async function (answer) {
+        const addEmp = await db.createEmployee(answer);
+        const showEmp = await db.viewAllEmployees();
+        console.table(showEmp);
+        mainPrompt();
+    });
+};
+
+// add a new role
+function addRole() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: 'New role\'s department?',
+            choices: (async() => {
+                const arr = [];
+                const deps = await db.viewAllDepartments();
+                deps.forEach(deps => {
+                    arr.push(deps.Department)
+                });
+                return arr;
+            }),
+            name: 'department',
+        },
+        {
+            type: 'input',
+            message: 'New role\'s title?',
+            name: 'title',
+        },
+        {
+            type: 'input',
+            message: 'New role\'s salary?',
+            name: 'salary',
+        },
+    ])
+    .then(async function (answer) {
+        const addRole = await db.createRole(answer);
+        const showRoles = await db.viewAllRoles();
+        console.table(showRoles);
+        mainPrompt();
+    });
 };
 
 // add a new department
@@ -189,9 +202,31 @@ function addDepartment() {
       });
 };
 
-// add a new role
-
-
 function quit() {
     process.exit();
 };
+
+// --------------------------------------------------------------
+// Method 2: Async function mainPrompt() / not using inquirer and
+// without destructuring its response, but using choice.choice as
+// the variable as choice will be returned with the promise object
+// before the switch case / See what changes in prompts.js / CRUD
+
+// async function mainPrompt() {
+//     const choice = await prompts();
+
+//     switch (choice.choice) {
+//         case 'View all employees':
+//             viewAllEmployees(); // Read from db
+//             break;
+//         case 'View all roles':
+//             viewAllRoles();
+//             break;
+//         case 'View all departments':
+//             viewAllDepartments();
+//             break;
+//         case 'Quit':
+//             quit(); // Function to exit the app
+//             break;
+//     };
+// };
