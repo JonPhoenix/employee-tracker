@@ -1,6 +1,7 @@
 // 'use strict';
 
 const inquirer = require('inquirer');
+const db = require('./db');
 
 // ----------------------------------------------------
 // Method 1: Prompts routed to server.js / no function
@@ -19,12 +20,39 @@ module.exports = {
                 'View all departments',
                 'View employees by department',
                 'View employees by manager',
-                'Add a new employee',
+                // 'Add a new employee',
                 'Add a new role',
                 'Add a new department',
-                'Quit',
+                // 'Update employee',
+                'Exit',
             ]
         }
+    ],
+
+    addNewRolePrompt: [
+        {
+            type: 'list',
+            message: 'New role\'s department\'s id?',
+            choices: (async() => {
+                const arr = [];
+                const deps = await db.viewAllDepartments();
+                deps.forEach(deps => {
+                    arr.push(deps.id)
+                });
+                return arr;
+            }),
+            name: 'department',
+        },
+        {
+            type: 'input',
+            message: 'New role\'s title?',
+            name: 'title',
+        },
+        {
+            type: 'input',
+            message: 'New role\'s salary?',
+            name: 'salary',
+        },
     ],
 }
 

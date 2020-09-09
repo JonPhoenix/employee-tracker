@@ -114,47 +114,30 @@ class DB {
     }
     
     // Add a new employee
-    createEmployee(employee) {
-        return this.connection.query(`INSERT INTO employees SET ?`, { 
-            first_name: employee.first_name,
-            last_name: employee.last_name,
-            role_id: parseInt(employee.role.split(" ")),
-            salary: employee.salary
-
-        },
-        `SELECT * FROM roles ORDER BY id`,
-        function(err, result) {
-            if (err) {
-                throw err;
-            }
-            return result;
-        }
-        );
-    }
-
-    // Add a new role
-    createRole(role) {
-        return this.connection.query(`INSERT INTO role SET ?`, {
-            title: role.title,
-            salary: role.salary,
-            department_id: parseInt(role.department.split(" ")),
-        }
-        `SELECT * FROM department ORDER BY id`,
-        function(err, result) {
-            if (err) {
-                throw err;
-            }
-            return result;
-        }
-        );
-    }
+    // createEmployee(employee) {
+    //     // console.log(employee);
+    //     return this.connection.query(
+    //     `
+    //     INSERT INTO employees SET ?
+    //     `, 
+    //     { 
+    //     first_name: employee.first_name,
+    //     last_name: employee.last_name,
+    //     role_id: 4,
+    //     });
+    // }
 
     // Add a new department
     createDepartment(department) {
-        return this.connection.query(`INSERT INTO departments SET ?`, {
+        return this.connection.query(
+        `
+        INSERT INTO departments SET ?
+        `, 
+        {
             name: department.department,
         });
     };
+
 };
 
 // Testing

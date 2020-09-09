@@ -3,8 +3,10 @@
 const inquirer = require('inquirer');
 const logo = require('asciiart-logo');
 const prompts = require('./prompts');
-const db = require('./db'); 
+const db = require('./db');
+const connection = require('./db/connection');
 require('console.table');
+
 
 // Init function with asciiart-logo and mainPrompt() call
 init();
@@ -44,13 +46,16 @@ async function mainPrompt() {
             addEmployee();
             break;
         case 'Add a new role':
-            addRole();
+            addNewRole();
             break;
         case 'Add a new department':
             addDepartment();
             break;
-        case 'Quit':
-            quit(); // Function to exit the app
+        case 'Update employee':
+            updateEmployeeDetails();
+            break;        
+        case 'Exit':
+            exit(); // Function to exit the app
             break;
     };
 };
@@ -100,91 +105,75 @@ async function viewEmployeesByManager() {
 };
 
 // Add a new employee
-function addEmployee() {
-    inquirer.prompt([
-        {
-            type: 'input',
-            message: 'New employee\'s first name?',
-            name: 'first_name',
-        },
-        {
-            type: 'input',
-            message: 'New employee\'s last name?',
-            name: 'last_name',
-        },
-        {
-            type: 'list',
-            message: 'New employee\'s job title?',
-            choices: (async() => {
-                const arr = [];
-                const roles = await db.viewAllRoles();
-                roles.forEach(role => {
-                      arr.push(role.Role)
-                });
-                return arr;
-            }),
-            name: 'role',
-        },
-        {
-            type: 'list',
-            message: 'New employee\'s department?',
-            choices: (async() => {
-                const arr = [];
-                const deps = await db.viewAllDepartments();
-                deps.forEach(deps => {
-                    arr.push(deps.Department)
-                });
-                return arr;
-            }),
-            name: 'department',
-        },
-        {
-            type: 'input',
-            message: 'New employee\'s salary?',
-            name: 'salary',
-        }
-    ])
-    .then(async function (answer) {
-        const addEmp = await db.createEmployee(answer);
-        const showEmp = await db.viewAllEmployees();
-        console.table(showEmp);
-        mainPrompt();
-    });
-};
+// function addEmployee() {
+//     inquirer.prompt([
+//         {
+//             type: 'input',
+//             message: 'New employee\'s first name?',
+//             name: 'first_name',
+//         },
+//         {
+//             type: 'input',
+//             message: 'New employee\'s last name?',
+//             name: 'last_name',
+//         },
+//         {
+//             type: 'list',
+//             message: 'New employee\'s job title?',
+//             choices: (async() => {
+//                 const arr = [];
+//                 const roles = await db.viewAllRoles();
+//                 roles.forEach(role => {
+//                     // arr.push(role.id+" "+role.Role)
+//                     arr.push(role.Role)
+//                 });
+//                 return arr;
+//             }),
+//             name: 'role',
+//         },
+//         {
+//             type: 'list',
+//             message: 'New employee\'s department?',
+//             choices: (async() => {
+//                 const arr = [];
+//                 const deps = await db.viewAllDepartments();
+//                 deps.forEach(deps => {
+//                     arr.push(deps.Department)
+//                 });
+//                 return arr;
+//             }),
+//             name: 'department',
+//         },
+//     ])
+//     .then(async function (answer) {
+//         const addEmp = await db.createEmployee(answer);
+//         const showEmp = await db.viewAllEmployees();
+//         console.table(showEmp);
+//         mainPrompt();
+//     });
+// };
 
-// add a new role
-function addRole() {
-    inquirer.prompt([
-        {
-            type: 'list',
-            message: 'New role\'s department?',
-            choices: (async() => {
-                const arr = [];
-                const deps = await db.viewAllDepartments();
-                deps.forEach(deps => {
-                    arr.push(deps.Department)
-                });
-                return arr;
-            }),
-            name: 'department',
-        },
-        {
-            type: 'input',
-            message: 'New role\'s title?',
-            name: 'title',
-        },
-        {
-            type: 'input',
-            message: 'New role\'s salary?',
-            name: 'salary',
-        },
-    ])
-    .then(async function (answer) {
-        const addRole = await db.createRole(answer);
+// Add a new role
+async function addNewRole() { 
+    inquirer.prompt(prompts.addNewRolePrompt).then((response) => {
+        connection.query(
+        `
+        INSERT INTO roles
+            (department_id, title, salary)
+        VALUES 
+            ('${response.department}', '${response.title}', '${response.salary}');
+        `
+        );
+    })
+    .then(async function () {
         const showRoles = await db.viewAllRoles();
+        console.log('\n');
+        console.log("The new role has been added!");
+        console.log('\n');
         console.table(showRoles);
+        console.log('===========================================');
         mainPrompt();
-    });
+      });
 };
 
 // add a new department
@@ -197,12 +186,20 @@ function addDepartment() {
       .then(async function (answer) {
         const addDepart = await db.createDepartment(answer);
         const showDept = await db.viewAllDepartments();
+        console.log('\n');
+        console.log("The new department has been added!");
+        console.log('\n');
         console.table(showDept);
+        console.log('================');
         mainPrompt();
       });
 };
 
-function quit() {
+// Update and employee
+
+
+// exit the app
+function exit() {
     process.exit();
 };
 
