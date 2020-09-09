@@ -183,8 +183,8 @@ function addDepartment() {
         message: 'Name of the new department?',
         name: 'department',
       })
-      .then(async function (answer) {
-        const addDepart = await db.createDepartment(answer);
+      .then(async function (response) {
+        const addDepart = await db.createDepartment(response);
         const showDept = await db.viewAllDepartments();
         console.log('\n');
         console.log("The new department has been added!");
