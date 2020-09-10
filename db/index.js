@@ -121,14 +121,14 @@ class DB {
         });
     };
 
-    updateEmployeeRole(employeeID, roleID) {
+    updateEmployeeRole(employee, role) {
         return this.connection.query(
             `
             UPDATE employees
             SET role_id = ? 
             WHERE employees.id = ?;
             `,
-            [employeeID, roleID]
+            [employee, role]
         );
     };
 };
