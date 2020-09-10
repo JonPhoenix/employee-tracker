@@ -14,7 +14,9 @@ init();
 function init() {
   const logoText = logo({ name: 'Employee Tracker' }).render();
   console.log(logoText);
-  mainPrompt();
+  console.log('  WELCOME!');
+  console.log('\n');
+//   mainPrompt();
 }
 
 // --------------------------------------------------------------
@@ -43,7 +45,7 @@ async function mainPrompt() {
             viewEmployeesByManager();
             break;
         case 'Add a new employee':
-            addEmployee();
+            addNewEmployee();
             break;
         case 'Add a new role':
             addNewRole();
@@ -105,70 +107,67 @@ async function viewEmployeesByManager() {
 };
 
 // Add a new employee
-// function addEmployee() {
-//     inquirer.prompt([
-//         {
-//             type: 'input',
-//             message: 'New employee\'s first name?',
-//             name: 'first_name',
-//         },
-//         {
-//             type: 'input',
-//             message: 'New employee\'s last name?',
-//             name: 'last_name',
-//         },
-//         {
-//             type: 'list',
-//             message: 'New employee\'s job title?',
-//             choices: (async() => {
-//                 const arr = [];
-//                 const roles = await db.viewAllRoles();
-//                 roles.forEach(role => {
-//                     // arr.push(role.id+" "+role.Role)
-//                     arr.push(role.Role)
-//                 });
-//                 return arr;
-//             }),
-//             name: 'role',
-//         },
-//         {
-//             type: 'list',
-//             message: 'New employee\'s department?',
-//             choices: (async() => {
-//                 const arr = [];
-//                 const deps = await db.viewAllDepartments();
-//                 deps.forEach(deps => {
-//                     arr.push(deps.Department)
-//                 });
-//                 return arr;
-//             }),
-//             name: 'department',
-//         },
-//     ])
-//     .then(async function (answer) {
-//         const addEmp = await db.createEmployee(answer);
-//         const showEmp = await db.viewAllEmployees();
-//         console.table(showEmp);
-//         mainPrompt();
-//     });
-// };
+async function addNewEmployee() {
+    inquirer.prompt(prompts.addNewEmployeePrompt)
+    .then((response) => {
+        connection.query(
+            ` 
+            INSERT INTO employees
+                (first_name, last_name, role_id)
+            VALUES
+                (
+                '${response.first_name}', 
+                '${response.last_name}',
+                '${response.role}'
+                );
+            `
+        );            
+        connection.query(
+            ` 
+            INSERT INTO roles
+                (title, salary, department_id)
+            VALUES 
+                (
+                '${response.role}',
+                '${response.salary}',
+                '${response.department}'
+                );
+            `
+        );
+    })
+    .then(async function () {
+        const showEmployees = await db.viewAllEmployees();
+        console.log('\n');
+        console.log('A new employee has been added!');
+        console.log('\n');
+        console.table(showEmployees);
+        console.log('====================================================================================');
+        mainPrompt();
+      });
+}
+
 
 // Add a new role
 async function addNewRole() { 
-    inquirer.prompt(prompts.addNewRolePrompt).then((response) => {
+    inquirer.prompt(prompts.addNewRolePrompt)
+    .then((response) => {
         connection.query(
         `
         INSERT INTO roles
             (department_id, title, salary)
         VALUES 
-            ('${response.department}', '${response.title}', '${response.salary}');
+            (
+            '${response.department}', 
+            '${response.title}', 
+            '${response.salary}'
+            );
         `
         );
     })
     .then(async function () {
         const showRoles = await db.viewAllRoles();
         console.log('\n');
-        console.log("The new role has been added!");
+        console.log('The new role has been added!');
         console.log('\n');
         console.table(showRoles);
         console.log('===========================================');
@@ -176,7 +175,7 @@ async function addNewRole() {
       });
 };
 
-// add a new department
+// Add a new department
 function addDepartment() {
     inquirer.prompt({
         type: 'input',
@@ -195,13 +194,15 @@ function addDepartment() {
       });
 };
 
-// Update and employee
+// Update an employee's role
 
 
 // exit the app
 function exit() {
     process.exit();
 };
+
+mainPrompt();
 
 // --------------------------------------------------------------
 // Method 2: Async function mainPrompt() / not using inquirer and

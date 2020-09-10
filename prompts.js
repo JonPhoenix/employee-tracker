@@ -20,7 +20,7 @@ module.exports = {
                 'View all departments',
                 'View employees by department',
                 'View employees by manager',
-                // 'Add a new employee',
+                'Add a new employee',
                 'Add a new role',
                 'Add a new department',
                 // 'Update employee',
@@ -36,8 +36,8 @@ module.exports = {
             choices: (async() => {
                 const arr = [];
                 const deps = await db.viewAllDepartments();
-                deps.forEach(deps => {
-                    arr.push(deps.id)
+                deps.forEach(dep => {
+                    arr.push(dep.id)
                 });
                 return arr;
             }),
@@ -54,6 +54,51 @@ module.exports = {
             name: 'salary',
         },
     ],
+
+    addNewEmployeePrompt: [
+        {
+            type: 'input',
+            message: 'New employee\'s first name?',
+            name: 'first_name',
+        },
+        {
+            type: 'input',
+            message: 'New employee\'s last name?',
+            name: 'last_name',
+        },
+        {
+            type: 'list',
+            message: 'New employee\'s role ID?',
+            choices: (async() => {
+                const arr = [];
+                const roles = await db.viewAllRoles();
+                roles.forEach(role => {
+                    // arr.push(role.id+" "+role.Role)
+                    arr.push(role.id)
+                });
+                return arr;
+            }),
+            name: 'role',
+        },
+        {
+            type: 'input',
+            message: 'New role\'s salary?',
+            name: 'salary',
+        },
+        {
+            type: 'list',
+            message: 'New employee\'s department?',
+            choices: (async() => {
+                const arr = [];
+                const deps = await db.viewAllDepartments();
+                deps.forEach(dep => {
+                    arr.push(dep.id)
+                });
+                return arr;
+            }),
+            name: 'department',
+        },
+    ]
 }
 
 

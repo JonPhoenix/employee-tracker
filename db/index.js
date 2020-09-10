@@ -6,7 +6,7 @@ const connection = require('./connection');
 class DB {
     constructor(connection) {
         this.connection =  connection;
-    }
+    };
 
     viewAllEmployees() {
         return this.connection.query(
@@ -31,7 +31,7 @@ class DB {
             id;
         `
         )
-    }
+    };
 
     viewAllRoles() {
         return this.connection.query(
@@ -49,7 +49,7 @@ class DB {
             id;
         `
         )
-    }
+    };
     
     viewAllDepartments() {
         return this.connection.query(
@@ -63,9 +63,8 @@ class DB {
             id;
         `
         )
-    }
+    };
 
-    // View all employees by department
     viewEmployeesByDepartment() {
         return this.connection.query(
         `
@@ -87,9 +86,8 @@ class DB {
             departments.name;
         `
         )
-    }
+    };
 
-    // View all employees by manager
     viewEmployeesByManager() {
         return this.connection.query(
         `
@@ -111,23 +109,8 @@ class DB {
             Manager DESC;
         `
         )
-    }
+    };
     
-    // Add a new employee
-    // createEmployee(employee) {
-    //     // console.log(employee);
-    //     return this.connection.query(
-    //     `
-    //     INSERT INTO employees SET ?
-    //     `, 
-    //     { 
-    //     first_name: employee.first_name,
-    //     last_name: employee.last_name,
-    //     role_id: 4,
-    //     });
-    // }
-
-    // Add a new department
     createDepartment(department) {
         return this.connection.query(
         `
