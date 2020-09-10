@@ -121,6 +121,16 @@ class DB {
         });
     };
 
+    updateEmployeeRole(employeeID, roleID) {
+        return this.connection.query(
+            `
+            UPDATE employees
+            SET role_id = ? 
+            WHERE employees.id = ?;
+            `,
+            [employeeID, roleID]
+        );
+    };
 };
 
 // Testing

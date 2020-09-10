@@ -16,7 +16,7 @@ function init() {
   console.log(logoText);
   console.log('  WELCOME!');
   console.log('\n');
-//   mainPrompt();
+  mainPrompt();
 }
 
 // --------------------------------------------------------------
@@ -53,8 +53,8 @@ async function mainPrompt() {
         case 'Add a new department':
             addDepartment();
             break;
-        case 'Update employee':
-            updateEmployeeDetails();
+        case 'Update employee\'s role':
+            updateEmployeeRole();
             break;        
         case 'Exit':
             exit(); // Function to exit the app
@@ -68,24 +68,33 @@ async function mainPrompt() {
 async function viewAllEmployees() {
     const employees = await db.viewAllEmployees();
     console.log('\n');
+    console.log('===================================================================================');
     console.table(employees);
-    console.log('====================================================================================');
+    console.log('===================================================================================');
+    console.log('\n');
+
     mainPrompt();
 };
 
 async function viewAllRoles() {
     const roles = await db.viewAllRoles();
     console.log('\n');
+    console.log('===========================================');
     console.table(roles);
     console.log('===========================================');
+    console.log('\n');
+
     mainPrompt();
 };
 
 async function viewAllDepartments() {
     const departments = await db.viewAllDepartments();
     console.log('\n');
+    console.log('================');
     console.table(departments);
     console.log('================');
+    console.log('\n');
+
     mainPrompt();
 };
 
@@ -93,16 +102,22 @@ async function viewAllDepartments() {
 async function viewEmployeesByDepartment() {
     const empByDep = await db.viewEmployeesByDepartment();
     console.log('\n');
+    console.log('=======================================================================');
     console.table(empByDep);
     console.log('=======================================================================');
+    console.log('\n');
+
     mainPrompt();
 };
 //
 async function viewEmployeesByManager() {
     const empByMan = await db.viewEmployeesByManager();
     console.log('\n');
+    console.log('=======================================================================');
     console.table(empByMan);
     console.log('=======================================================================');
+    console.log('\n');
+
     mainPrompt();
 };
 
@@ -140,8 +155,11 @@ async function addNewEmployee() {
         console.log('\n');
         console.log('A new employee has been added!');
         console.log('\n');
+        console.log('===================================================================================');
         console.table(showEmployees);
-        console.log('====================================================================================');
+        console.log('===================================================================================');
+        console.log('\n');
+
         mainPrompt();
       });
 }
@@ -169,8 +187,11 @@ async function addNewRole() {
         console.log('\n');
         console.log('The new role has been added!');
         console.log('\n');
+        console.log('===========================================');
         console.table(showRoles);
         console.log('===========================================');
+        console.log('\n');
+
         mainPrompt();
       });
 };
@@ -188,21 +209,60 @@ function addDepartment() {
         console.log('\n');
         console.log("The new department has been added!");
         console.log('\n');
+        console.log('================');
         console.table(showDept);
         console.log('================');
+        console.log('\n');
+
         mainPrompt();
       });
 };
 
 // Update an employee's role
+async function updateEmployeeRole() {
+    const allEmployees = await db.viewAllEmployees();
+    const { employee } = await inquirer.prompt([
+        {
+        type: 'list',
+        message: 'Which employee would you like to update?',
+        choices: (allEmployees.map(({ First_Name, Last_Name, id }) => ({ 
+            name: `${First_Name} ${Last_Name}`,
+            value: id
+        }))),
+        name: 'employee',
+        }
+    ]);
 
+    const allRoles = await db.viewAllRoles();
+    const answer = await inquirer.prompt([
+        {
+        type: 'list',
+        message: 'What is the employee\'s new role ID?',
+        choices: (allRoles.map(({ title, id }) => ({ 
+            name: title,
+            value: id
+        }))),
+        name: 'role',
+        }
+    ]);
+
+    const updateRole = await db.updateEmployeeRole(employee, answer.role);
+    const showEmployees = await db.viewAllEmployees();
+        console.log('\n');
+        console.log("The employee's role have been updated.");
+        console.log('\n');
+        console.log('===================================================================================');
+        console.table(showEmployees);
+        console.log('===================================================================================');
+        console.log('\n');
+
+        mainPrompt();
+};
 
 // exit the app
 function exit() {
     process.exit();
 };
-
-mainPrompt();
 
 // --------------------------------------------------------------
 // Method 2: Async function mainPrompt() / not using inquirer and

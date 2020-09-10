@@ -23,7 +23,7 @@ module.exports = {
                 'Add a new employee',
                 'Add a new role',
                 'Add a new department',
-                // 'Update employee',
+                'Update employee\'s role',
                 'Exit',
             ]
         }
@@ -98,9 +98,37 @@ module.exports = {
             }),
             name: 'department',
         },
-    ]
-}
+    ],
 
+    // updateRolePrompt: [
+    //     {
+    //         type: 'list',
+    //         message: 'Which employee would you like to update?',
+    //         choices: (async() => {
+    //             const allEmployees = await db.viewAllEmployees();
+
+    //             allEmployees.map(({ First_Name, Last_Name, id }) => ({ 
+    //                 name: `${First_Name} ${Last_Name}`,
+    //                 value: id
+    //             }));
+    //         }),
+    //         name: 'employeeID',
+    //     },
+    //     {
+    //         type: 'list',
+    //         message: 'Which role would you like to update?',
+    //         choices: (async() => {
+    //             const roles = await db.viewAllRoles();
+
+    //             roles.map(({ title, id }) => ({ 
+    //                 name: title,
+    //                 value: id
+    //             }));
+    //         }),
+    //         name: 'roleID',
+    //     },
+    // ],
+};
 
 // ----------------------------------------------------
 // Method 2: Prompts routed to server.js / function and
