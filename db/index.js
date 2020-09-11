@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 
 const connection = require('./connection');
 
@@ -144,3 +144,4 @@ class DB {
 // firstTest()
 
 module.exports = new DB(connection);
+// --------------------------------------------------------------

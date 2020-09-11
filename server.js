@@ -1,4 +1,5 @@
-// 'use strict';
+'use strict';
+
 // Dependencies
 const inquirer = require('inquirer');
 const logo = require('asciiart-logo');
@@ -288,3 +289,4 @@ function exit() {
 //             break;
 //     };
 // };
+// --------------------------------------------------------------
