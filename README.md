@@ -23,7 +23,8 @@
   To run the **Employee Tracker** you will need to install: The provided **package.json** containing the required dependencies.
 
   ## Usage
-  How this application can be used: Input **node** **server.js**. The following **walk-through demo** shows the app functionality:
+  How this application can be used: Input **node** **server.js** to start the app.
+  The following **walk-through demo** shows the app functionality:
 
   ![Employee Tracker](assets/employee-tracker-demo.gif)
 
