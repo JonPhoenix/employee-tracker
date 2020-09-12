@@ -1,5 +1,5 @@
 {
-  "name": "Undefined-Tracker",
+  "name": "Employee-Tracker",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/JonPhoenix/employee-tracker"
   },
   "keywords": [],
-  "author": "",
+  "author": "Jon Phoenix",
   "license": "MIT",
   "bugs": {
     "url": ""
