@@ -3,6 +3,7 @@
 const connection = require('./connection');
 
 // Database class / methods for db queries
+
 class DB {
     constructor(connection) {
         this.connection =  connection;
@@ -136,15 +137,4 @@ class DB {
     };
 };
 
-// Testing
-// let test = new DB (connection)
-
-// async function firstTest() {
-//     const employees = await test.viewAllEmployees()
-//     console.log(employees);
-// }
-
-// firstTest()
-
 module.exports = new DB(connection);
-// --------------------------------------------------------------

@@ -20,7 +20,7 @@
   - [Questions](#questions)
 
   ## Installation
-  To run the **Employee Tracker** you will need to install: The provided **package.json** containing the required dependencies.
+  To run the **Employee Tracker** you will need to install the provided **package.json** containing the required dependencies, then create the local MySQL database "**employees.db**" executing the provided "schema" and "seed" files with **MySQL Workbench**.
 
   ## Usage
   How this application can be used: Input **node** **server.js** to start the app.
@@ -83,4 +83,3 @@
 
   ```
   - - -
-

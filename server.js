@@ -8,7 +8,6 @@ const db = require('./db');
 const connection = require('./db/connection');
 require('console.table');
 
-
 // Init function with asciiart-logo and mainPrompt() call
 init();
 
@@ -20,18 +19,14 @@ function init() {
   mainPrompt();
 }
 
-// --------------------------------------------------------------
-// Method 1: Async function mainPrompt() / bringing inquirer and
-// destructuring its response, using { choice } as the variable to
-// pull out choice from the promise object returned, so no need to
-// use choice.choice before switch case / See prompts.js / CRUD:
+// Async function mainPrompt() / See prompts.js / CRUD
 
 async function mainPrompt() {
     const { choice } = await inquirer.prompt(prompts.mainPrompt);
 
     switch (choice) {
         case 'View all employees':
-            viewAllEmployees(); // Read from db
+            viewAllEmployees();
             break;
         case 'View all roles':
             viewAllRoles();
@@ -58,12 +53,11 @@ async function mainPrompt() {
             updateEmployeeRole();
             break;        
         case 'Exit':
-            exit(); // Function to exit the app
+            exit();
             break;
     };
 };
 
-// --------------------------------------------------------------
 // Async functions / db calls / print tables to console.log
 
 async function viewAllEmployees() {
@@ -99,7 +93,6 @@ async function viewAllDepartments() {
     mainPrompt();
 };
 
-//
 async function viewEmployeesByDepartment() {
     const empByDep = await db.viewEmployeesByDepartment();
     console.log('\n');
@@ -110,7 +103,7 @@ async function viewEmployeesByDepartment() {
 
     mainPrompt();
 };
-//
+
 async function viewEmployeesByManager() {
     const empByMan = await db.viewEmployeesByManager();
     console.log('\n');
@@ -122,7 +115,6 @@ async function viewEmployeesByManager() {
     mainPrompt();
 };
 
-// Add a new employee
 async function addNewEmployee() {
     inquirer.prompt(prompts.addNewEmployeePrompt)
     .then((response) => {
@@ -165,8 +157,6 @@ async function addNewEmployee() {
       });
 }
 
-
-// Add a new role
 async function addNewRole() { 
     inquirer.prompt(prompts.addNewRolePrompt)
     .then((response) => {
@@ -197,7 +187,6 @@ async function addNewRole() {
       });
 };
 
-// Add a new department
 function addDepartment() {
     inquirer.prompt({
         type: 'input',
@@ -219,7 +208,6 @@ function addDepartment() {
       });
 };
 
-// Update an employee's role
 async function updateEmployeeRole() {
     const allEmployees = await db.viewAllEmployees();
     const { employee } = await inquirer.prompt([
@@ -261,33 +249,6 @@ async function updateEmployeeRole() {
         mainPrompt();
 };
 
-// exit the app
 function exit() {
     process.exit();
 };
-
-// --------------------------------------------------------------
-// Method 2: Async function mainPrompt() / not using inquirer and
-// without destructuring its response, but using choice.choice as
-// the variable as choice will be returned with the promise object
-// before the switch case / See what changes in prompts.js / CRUD
-
-// async function mainPrompt() {
-//     const choice = await prompts();
-
-//     switch (choice.choice) {
-//         case 'View all employees':
-//             viewAllEmployees(); // Read from db
-//             break;
-//         case 'View all roles':
-//             viewAllRoles();
-//             break;
-//         case 'View all departments':
-//             viewAllDepartments();
-//             break;
-//         case 'Quit':
-//             quit(); // Function to exit the app
-//             break;
-//     };
-// };
-// --------------------------------------------------------------
