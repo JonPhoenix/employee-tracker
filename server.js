@@ -235,7 +235,8 @@ async function updateEmployeeRole() {
     ]);
 
     const allRoles = await db.viewAllRoles();
-    const answer = await inquirer.prompt([
+    console.table(allRoles);
+    const { role } = await inquirer.prompt([
         {
         type: 'list',
         message: 'What is the employee\'s new role ID?',
@@ -247,10 +248,10 @@ async function updateEmployeeRole() {
         }
     ]);
 
-    const updateRole = await db.updateEmployeeRole(employee, answer.role);
+    const updateRole = await db.updateEmployeeRole(employee, role);
     const showEmployees = await db.viewAllEmployees();
         console.log('\n');
-        console.log("The employee's role have been updated.");
+        console.log('The employee\'s role have been updated.');
         console.log('\n');
         console.log('===================================================================================');
         console.table(showEmployees);

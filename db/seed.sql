@@ -1,4 +1,4 @@
-USE undecided_db;
+USE employees_db;
 
 -- Populating departments
 INSERT INTO departments

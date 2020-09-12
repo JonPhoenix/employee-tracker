@@ -1,16 +1,16 @@
-DROP DATABASE IF EXISTS undecided_db;
-CREATE DATABASE undecided_db;
+DROP DATABASE IF EXISTS employees_db;
+CREATE DATABASE employees_db;
 
-USE undecided_db;
+USE employees_db;
 
--- Creating table
+-- Creating table Departments
 CREATE TABLE departments (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(30) UNIQUE NOT NULL,
   PRIMARY KEY(id)
 );
 
--- Creating table
+-- Creating table Roles
 CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(30) UNIQUE NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE roles (
   ON DELETE CASCADE
 );
 
--- Creating table
+-- Creating table Employees
 CREATE TABLE employees (
   id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) UNIQUE NOT NULL,

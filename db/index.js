@@ -124,9 +124,12 @@ class DB {
     updateEmployeeRole(employee, role) {
         return this.connection.query(
             `
-            UPDATE employees
-            SET role_id = ? 
-            WHERE employees.id = ?;
+            UPDATE 
+                employees
+            SET 
+                role_id = ? 
+            WHERE 
+                employees.id = ?;
             `,
             [employee, role]
         );
